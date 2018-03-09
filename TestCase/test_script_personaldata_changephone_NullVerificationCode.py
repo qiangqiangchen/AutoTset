@@ -9,8 +9,6 @@ DateTime: 2018-1-18
 '''
 import unittest
 from appium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from time import sleep
 
@@ -35,10 +33,9 @@ class test_script_personaldata_modifyphone_NullVerficationCode(unittest.TestCase
 
 
 	def test_script(self):
-
+		sleep(5)
 		#定位“我的”并点击
-		mine = WebDriverWait(self.driver,3,0.01).until(EC.presence_of_element_located((By.NAME, '我的')),message='“我的”按钮未定位')
-		mine.click()
+		self.driver.find_element_by_name("我的").click()
 
 		sleep(2)
 		nick = self.driver.find_element_by_id("tech.yunjing.biconlife.app.mine:id/tv_mf_userNick")
