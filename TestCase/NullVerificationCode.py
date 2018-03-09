@@ -46,7 +46,7 @@ class test_script_personaldata_modifyphone_NullVerficationCode(unittest.TestCase
 		if nick.is_displayed:
 			nick.click()
 		else:
-			print("nick not found")
+			print "nick not found"
 
 		sleep(2)
 		phone = self.driver.find_element_by_id("tech.yunjing.biconlife.app.mine:id/ll_phone")
@@ -54,7 +54,7 @@ class test_script_personaldata_modifyphone_NullVerficationCode(unittest.TestCase
 		if phone.is_displayed:
 			phone.click()
 		else:
-			print("phone not found")
+			print "phone not found"
 
 		sleep(2)
 		#定义“下一步”按钮，获取其clickable的值
