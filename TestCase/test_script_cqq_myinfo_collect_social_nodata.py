@@ -1,12 +1,11 @@
 # -*- coding:utf-8 -*-
 # Author : 陈强强
-#TestCase: 个人资料-实名认证-身份证号码输入正确，姓名输入10个汉字，点击“下一步”
-#DateTime: 2018-1-18
+#TestCase: 我的收藏-社交-列表为空
+#DateTime: 2018-3-22
 
 import unittest
 from appium import webdriver
 from time import sleep
-import helper
 import os
 
 # Returns abs path relative to this file and not cwd
@@ -17,8 +16,7 @@ T = 2
 
 class test_script(unittest.TestCase):
     
-    def setUp(self):  
-        os.popen("adb uninstall io.appium.android.ime")   
+    def setUp(self):     
         desired_caps = {}
         desired_caps['platformName'] = 'Android'
         desired_caps['platformVersion'] = '6.0'
@@ -49,41 +47,48 @@ class test_script(unittest.TestCase):
             + item_name + '")'
             ) 
         item.click() 
-            
+    
     """
-    The id number is entered correctly, the name is entered in 10 Chinese characters, and click "next".
-    """
+    Name, id number input space, special characters, line feed and other abnormal data.
+    """      
     def test_script(self):
+        
         #操作步骤
         
         #点击我的  tab
-        me_btn=self.driver.find_element_by_name("发现")
+        me_btn=self.driver.find_element_by_name("我的")
         if me_btn.is_displayed():
             me_btn.click()
             sleep(T*1)
             
-        
-        self.driver.find_element_by_name('新闻').click()
+        #点击我的收藏按钮
+        self.driver.find_element_by_id('tech.yunjing.biconlife.app.mine:id/ll_mf_myFocus').click()
         sleep(T)
-        helper.swipe_down(self.driver)
-        sleep(T*2)
-        item=self.driver.find_element_by_android_uiautomator('new UiSelector().className("android.widget.ListView").childSelector(new UiSelector().className("android.widget.RelativeLayout").index(3))')
-        item.click()
-        sleep(5)
+        
+        #点击标题
+        self.driver.find_element_by_id('tech.yunjing.biconlife.app.mine:id/tv_amc_title').click()
+        sleep(T)
+        
+        #切换到社交
+        self.driver.find_element_by_id('tech.yunjing.biconlife.app.mine:id/tv_pmc_socical').click()
         
         
-        helper.find_element_scroll(self.driver,'tech.yunjing.biconlife.app.news:id/rl_ndw_praise')
-        sleep(5)
+        
+        #断言无界面文字显示是否正确
+        flag=u"暂时还没有收藏过任何内容···" in self.driver.page_source
+        if flag:
+            print "The page content is empty"
+        else:
+            print "The page content is not empty"
+        assert flag==True
+        
+        #断言缺省图是否显示
+        iv_jni_defaultNoData=self.driver.find_element_by_id('tech.yunjing.biconlife:id/iv_jni_defaultNoData')
+        assert iv_jni_defaultNoData.is_displayed()==True 
+            
         
         
-        self.driver.find_element_by_id('tech.yunjing.biconlife.app.news:id/iv_ndf_bg_picture').click()
-        
-
-        
-
-        
-        
-              
+               
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(test_script)
     unittest.TextTestRunner(verbosity=2).run(suite)

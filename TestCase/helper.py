@@ -8,6 +8,7 @@
 from appium import webdriver
 import sys
 import time
+import threading
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -63,8 +64,64 @@ def find_element_scroll(driver,id):
         print"not found"
         swipe_up(driver)
         find_element_scroll(driver, id)
+        
+
+def find_element_scroll2(driver,id):
+    source=None
+    while True:
+        element=is_exist(driver, 'id', id)
+        if element:
+            element.click()
+            break
+        else:
+            if source==driver.page_source:
+                print'The content of the page has not changed.' 
+                break
+            else:
+                source=driver.page_source
+                swipe_up(driver, 1000)
+                
+         
+def wait_element(driver,tag,content):
+    index=0
+    while index<10:
+        if index<10:
+            if is_exist(driver, tag, content):
+                print 'found tag '
+                break
+            else:
+                print'not found :%s'%(str(index))
+                time.sleep(1)
+                index+=1
+        else:
+            print 'timeout'
+            break
+            
+            
+    return is_exist(driver, tag, content)
+            
+        
+            
+
+
+            
+def is_exist(driver,tag,content):
     
+    try:  
+        if tag=='id':
+            element=driver.find_element_by_id(content)
+            return element
+        if tag=='name':
+            element=driver.find_element_by_name(content)
+            return element
+        if tag=='class':
+            element=driver.find_element_by_class_name(content)
+            return element
     
+    except:
+        print '%s: %s is not found'%(tag,content)
+        return False
+        
         
         
     

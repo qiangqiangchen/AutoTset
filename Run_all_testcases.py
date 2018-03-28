@@ -6,7 +6,7 @@ import unittest
 import os
 import time
 import subprocess
-from utils import HTMLTestRunner
+from tools import HTMLTestRunner
 
 casepath = "TestCase\\"
 result = "result\\"
